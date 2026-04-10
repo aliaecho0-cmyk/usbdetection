@@ -2,460 +2,473 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>USB人格扫描 · 大学生精神状态测试</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>大学生SBTI人格测试</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            background: #eef5ff;
-            font-family: system-ui, -apple-system, 'Segoe UI', 'Noto Sans', sans-serif;
-            padding: 32px 20px 48px;
-            color: #1a2c3e;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
         }
+
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
-        .hero {
-            background: white;
-            border-radius: 48px;
-            padding: 48px 32px 56px;
+
+        /* 头部 */
+        .header {
             text-align: center;
-            box-shadow: 0 12px 30px rgba(0, 20, 50, 0.08);
+            margin-bottom: 30px;
         }
-        .hero h1 {
+
+        .header h1 {
             font-size: 2.2rem;
-            font-weight: 600;
-            line-height: 1.3;
-            letter-spacing: -0.3px;
-            color: #0f2b3d;
-            white-space: pre-line;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
         }
-        .hero-sub {
-            margin-top: 28px;
-            font-size: 0.85rem;
-            color: #6c86a3;
-            border-top: 1px solid #e2edf7;
-            display: inline-block;
-            padding-top: 20px;
+
+        .header p {
+            color: #555;
+            font-size: 0.95rem;
         }
-        .hero-sub p {
-            margin: 6px 0;
+
+        /* 进度条 */
+        .progress-container {
+            background: #e0e0e0;
+            border-radius: 30px;
+            height: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
         }
-        .start-btn {
-            background: #2c5a7a;
-            color: white;
-            border: none;
-            font-size: 1.2rem;
-            font-weight: 500;
-            padding: 14px 32px;
-            border-radius: 60px;
-            margin-top: 32px;
-            cursor: pointer;
-            transition: 0.2s;
+
+        .progress-bar {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            width: 0%;
+            height: 100%;
+            border-radius: 30px;
+            transition: width 0.3s ease;
         }
-        .start-btn:hover {
-            background: #1f4460;
-            transform: scale(0.97);
-        }
-        .quiz-panel {
-            background: white;
-            border-radius: 40px;
-            padding: 28px 24px 32px;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
-        }
-        .progress-text {
-            font-size: 0.8rem;
-            color: #5f7f9e;
-            background: #eef3fc;
-            display: inline-block;
-            padding: 4px 14px;
-            border-radius: 40px;
-            margin-bottom: 20px;
-        }
+
+        /* 题目卡片 */
         .question-card {
-            margin-bottom: 32px;
-            border-bottom: 1px solid #ecf3f9;
-            padding-bottom: 24px;
+            background: white;
+            border-radius: 28px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
         }
-        .q-title {
+
+        .question-title {
+            font-size: 1.2rem;
             font-weight: 600;
-            font-size: 1rem;
-            color: #2c5a7a;
-            margin-bottom: 12px;
-        }
-        .q-text {
-            font-size: 1.05rem;
-            font-weight: 500;
-            margin-bottom: 18px;
+            color: #1e293b;
+            margin-bottom: 20px;
             line-height: 1.4;
+            padding-left: 12px;
+            border-left: 4px solid #4f46e5;
         }
+
+        /* 选项组 */
         .options {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
+
         .option {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: #f8fbfe;
-            border-radius: 28px;
-            padding: 10px 18px;
-            border: 1px solid #dfe8f2;
+            gap: 14px;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-radius: 20px;
             cursor: pointer;
-            transition: 0.1s;
+            transition: all 0.2s ease;
+            border: 1.5px solid transparent;
         }
+
+        .option:hover {
+            background: #eef2ff;
+            transform: translateX(4px);
+        }
+
         .option.selected {
-            background: #e2effb;
-            border-color: #7fa1c2;
-            box-shadow: 0 0 0 1px #7fa1c2;
+            background: #eef2ff;
+            border-color: #4f46e5;
         }
-        .option input {
-            accent-color: #2c5a7a;
-            width: 18px;
-            height: 18px;
-            margin: 0;
-        }
-        .option label {
-            flex: 1;
-            font-size: 0.94rem;
-            line-height: 1.4;
-            color: #1f3a4e;
+
+        .option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #4f46e5;
             cursor: pointer;
+            flex-shrink: 0;
         }
-        .submit-area {
-            margin-top: 20px;
-            text-align: center;
+
+        .option-img {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        .option-img img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .option-text {
+            font-size: 0.95rem;
+            color: #334155;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        /* 提交按钮 */
         .submit-btn {
-            background: #2c5a7a;
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            margin: 40px auto 20px;
+            padding: 16px 28px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
             color: white;
             border: none;
-            font-size: 1rem;
-            padding: 12px 32px;
-            border-radius: 60px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        /* 弹窗模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            padding: 32px;
+            max-width: 550px;
+            width: 90%;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .reset-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: #e2e8f0;
+            color: #1e293b;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
-        .result-card {
-            background: white;
-            border-radius: 40px;
-            padding: 28px 26px;
-            margin-top: 28px;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+
+        .reset-btn:hover {
+            background: #cbd5e1;
         }
-        .result-header {
-            text-align: center;
-            border-bottom: 1px solid #e9f0f6;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-        }
-        .result-header h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #1f4460;
-        }
-        .personality-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: #e9f2fa;
-            padding: 8px 24px;
-            border-radius: 80px;
-            margin: 16px 0 8px;
-        }
-        .personality-img {
-            width: 56px;
-            height: 56px;
-            object-fit: contain;
-            border-radius: 28px;
-            background: white;
-        }
-        .personality-name {
-            font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #1a3e5c;
-        }
-        .personality-desc {
-            background: #f6fafe;
-            padding: 20px;
-            border-radius: 32px;
-            line-height: 1.55;
-            font-size: 0.98rem;
-            margin: 20px 0;
-            color: #2c475e;
-        }
-        .narrative-analysis {
-            background: #ffffff;
-            border-left: 5px solid #5f9bc2;
-            padding: 20px 22px;
-            border-radius: 24px;
-            margin: 20px 0;
-            font-size: 0.96rem;
-            line-height: 1.65;
-            color: #2c3f55;
-            text-align: justify;
-        }
-        .footer-note {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #7b98b3;
-            margin-top: 28px;
-        }
-        .hidden {
-            display: none;
-        }
-        button {
-            background: none;
+
+        hr {
+            margin: 16px 0;
             border: none;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px;
+            }
+            .question-card {
+                padding: 20px 16px;
+            }
+            .option-img {
+                width: 60px;
+                height: 60px;
+            }
+            .option-img img {
+                width: 60px;
+                height: 60px;
+            }
+            .modal-content {
+                padding: 24px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container" id="app">
-    <div id="heroSection" class="hero">
-        <h1>其实现在还在学校念书的大学生<br>都是USB</h1>
-        <div class="hero-sub">
-            <p>仅供娱乐</p>
-            <p>非商业用途</p>
-            <p>小红书 @怪力弹簧</p>
+    <div class="container">
+        <div class="header">
+            <h1>🐷 大学生SBTI人格测试</h1>
+            <p>21道题 · 解锁你的USB人格画像</p>
         </div>
-        <button class="start-btn" id="startBtn">⚡ 开始USB人格扫描 ⚡</button>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div id="questionsContainer"></div>
+
+        <button class="submit-btn" id="submitBtn">💾 插入USB接口</button>
     </div>
 
-    <div id="quizSection" class="quiz-panel hidden">
-        <div class="progress-text" id="progressHint">第1 / 21题</div>
-        <form id="quizForm">
-            <div id="questionsList"></div>
-            <div class="submit-area">
-                <button type="button" id="submitQuizBtn" class="submit-btn">✨ 提交完整报告 ✨</button>
+    <!-- 结果弹窗 -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 style="margin-bottom: 20px; text-align: center;">📀 你的 USB 人格画像</h2>
+            <div id="resultContent"></div>
+            <div style="text-align: center;">
+                <button class="reset-btn" id="resetBtn">🔁 重新测试</button>
             </div>
-        </form>
+        </div>
     </div>
 
-    <div id="resultSection" class="result-card hidden"></div>
-</div>
+    <script>
+        // 题目数据（21题）
+        const questionsData = [
+            { text: "小组作业分完组，群里三天没人说话。截止前24小时，你会：", options: { A: { text: "压制怒火和颜悦色"各位我们是不是该动一下了🙏"", personality: "FINE" }, B: { text: "直接摆烂，反正最后有人会急", personality: "SKIP" }, C: { text: "一个人把全组作业做了，然后只写自己名字", personality: "INDEPENDENT" } } },
+            { text: "你点的外卖被偷了。你会：", options: { A: { text: "算了。", personality: "ZOMB" }, B: { text: "在校园墙发帖怒斥", personality: "BURN" }, C: { text: "查监控找保卫，一定要把人揪出来", personality: "INDEPENDENT" } } },
+            { text: "期末考试周，你刚刚开始预习。你会：", options: { A: { text: "苦命通宵", personality: "DEAD" }, B: { text: "打开B站搜"3小时速通"，然后刷了2小时搞笑视频", personality: "CRUSH" }, C: { text: "找学长学姐要"必考题""往年真题"", personality: "OFFER" } } },
+            { text: "周一早八，闹钟响了三遍，你醒了但没起。此时你会：", options: { A: { text: "硬爬起来开启命苦一天", personality: "LATE" }, B: { text: "直接翘了", personality: "SKIP" }, C: { text: "再睡五分钟，然后上演神技准时出现教室", personality: "LATE" } } },
+            { text: "看到室友偷偷去图书馆学了一整天，回来后说"我今天啥也没干"。你心里真实想法是：", options: { A: { text: "我才啥都没干", personality: "FOMO" }, B: { text: "阴阳怪气一句："那你玩得挺开心啊"", personality: "CHEAT" }, C: { text: "早就看透了，但懒得拆穿", personality: "FINE" } } },
+            { text: "你在二手群卖教材，有人砍价从30砍到5块。你会：", options: { A: { text: "犹豫一下，最后5块卖了", personality: "BROK" }, B: { text: "回一句"要不我送你，再请你吃个饭？"", personality: "CHEAT" }, C: { text: "直接拉黑", personality: "BURN" } } },
+            { text: "你在食堂吃到一根头发。你的操作是：", options: { A: { text: "和别的大坎比起来只是生命中的一粒沙尘。", personality: "ZOMB" }, B: { text: "发校园墙怒斥", personality: "FOMO" }, C: { text: "端着盘子去找阿姨理论，但听到拒绝立马恢复怂包底色", personality: "TOE" } } },
+            { text: "你的专业被亲戚说"毕业即失业"。你会：", options: { A: { text: "认真解释专业前景，最后发现对方根本没听", personality: "FOMO" }, B: { text: "直接回怼："你还没被裁员啊。"", personality: "S_LOVER" }, C: { text: "cosplay笑面虎", personality: "CHEAT" } } },
+            { text: "你加入的社团通知"不来例会就扣分"，但你不想去，你会：", options: { A: { text: "没关系。忍耐是对社会化程度的训练。", personality: "GPA" }, B: { text: "直接退群，并在朋友圈发"退社团真爽"", personality: "PPT" }, C: { text: "请假说身体不舒服，继续打游戏", personality: "CHEAT" } } },
+            { text: "下周要上台做pre，你的PPT还没开始做，你会：", options: { A: { text: "反复演练。", personality: "GPA" }, B: { text: "一张口就是乱讲。", personality: "PPT" }, C: { text: "让AI生成直接念。", personality: "CHEAT" } } },
+            { text: "你和crush讲话的勇敢程度：", options: { A: { text: "拉完了", personality: "D_LOVER" }, B: { text: "人上人", personality: "S_LOVER" }, C: { text: "夯", personality: "CRUSH" } } },
+            { text: "学校突然通知：体测成绩和奖学金挂钩。你的反应是：", options: { A: { text: "无所谓，反正也拿不到奖学金", personality: "ZOMB" }, B: { text: "在群里找代跑", personality: "BROK" }, C: { text: "临时抱佛脚，苦命去操场刷圈", personality: "GPA" } } },
+            { text: "过年回家，亲戚问你"找到对象了吗？"。你会：", options: { A: { text: "尴尬笑笑，假装自己每天忙着念书", personality: "D_LOVER" }, B: { text: "亲切问候亲戚工资情况", personality: "BURN" }, C: { text: "直接说"关你屁事"，然后被爸妈瞪", personality: "INDEPENDENT" } } },
+            { text: "你在图书馆占了座，去上厕所回来，发现一个陌生人把你的东西推到桌子一角，自己坐在了你的位子上。对方抬头看你一眼说："你又没写名字"。你会：", options: { A: { text: "算了。让让傻子。", personality: "ZOMB" }, B: { text: "直接坐对面，每隔30秒瞪对方一眼", personality: "DARK" }, C: { text: "在微信跟朋友大骂特骂其实0个敢当面说", personality: "FOMO" } } },
+            { text: "遇到没有边界感的室友，你会：", options: { A: { text: "忍着。普渡众生", personality: "FINE" }, B: { text: "当面指出爽翻全寝", personality: "BURN" }, C: { text: "私下沟通", personality: "INDEPENDENT" } } },
+            { text: "你的室友每天晚上和对象视频到凌晨1点。你会：", options: { A: { text: "戴上耳塞。", personality: "LUCK" }, B: { text: "外放《大悲咒》对着ta的床", personality: "DARK" }, C: { text: "在宿舍群里发"希望大家11点后安静点🥰~爱你们~"", personality: "CHEAT" } } },
+            { text: "你刷到别人保研/拿大厂offer的经验帖，底下评论"接好运"。你真实想法是：", options: { A: { text: "看完并收藏，觉得有一天能用上", personality: "OFFER" }, B: { text: "点个赞，但默默有压力", personality: "FOMO" }, C: { text: "直接划走，并点不感兴趣", personality: "SKIP" } } },
+            { text: "当你难得逃课一次结果刚好查出勤了，你会：", options: { A: { text: "在群里疯狂求助", personality: "FOMO" }, B: { text: "火速从宿舍飞奔到教室，推门进去说自己刚刚遁尿", personality: "LATE" }, C: { text: "无所谓，继续玩手机", personality: "SKIP" } } },
+            { text: "学校要求下载一个极其难用的APP，用来打卡/交电费/选课。你会：", options: { A: { text: "下载并给一星好评", personality: "LATE" }, B: { text: "尝试找网页版", personality: "INDEPENDENT" }, C: { text: "滚。懒得装", personality: "DEAD" } } },
+            { text: "面对AI可能取代工作岗位的质疑，你的态度是：", options: { A: { text: "已经开始学AI工具，打不过就加入", personality: "LUCK" }, B: { text: "焦虑，觉得自己毕业就失业", personality: "FOMO" }, C: { text: "无所谓，到时候再说", personality: "SKIP" } } },
+            { text: "你做了一个"大学生SBTI"测试，结果骂你又懒又放不下、嘴硬还玻璃心。你的第一反应是：", options: { A: { text: "觉得这测试不准！", personality: "TOE" }, B: { text: "截图发朋友圈", personality: "CHEAT" }, C: { text: "转发到宿舍群进一步挑衅", personality: "BURN" } } }
+        ];
 
-<script>
-    // ---------- 题目数据 ----------
-    const questionsData = [
-        { text: "小组作业分完组，群里三天没人说话。截止前24小时，你会：", options: { A: { text: "压制怒火和颜悦色“各位我们是不是该动一下了🙏”", personality: "FINE" }, B: { text: "直接摆烂，反正最后有人会急", personality: "SKIP" }, C: { text: "一个人把全组作业做了，然后只写自己名字", personality: "INDEPENDENT" } } },
-        { text: "你点的外卖被偷了。你会：", options: { A: { text: "算了。", personality: "ZOMB" }, B: { text: "在校园墙发帖怒斥", personality: "BURN" }, C: { text: "查监控找保卫，一定要把人揪出来", personality: "DEAD" } } },
-        { text: "期末考试周，你刚刚开始预习。你会：", options: { A: { text: "苦命通宵", personality: "DEAD" }, B: { text: "打开B站搜“3小时速通”，然后刷了2小时搞笑视频", personality: "CRASH" }, C: { text: "找学长学姐要“必考题”“往年真题”", personality: "OFFER" } } },
-        { text: "周一早八，闹钟响了三遍，你醒了但没起。此时你会：", options: { A: { text: "硬爬起来开启命苦一天", personality: "LATE" }, B: { text: "直接翘了", personality: "SKIP" }, C: { text: "再睡五分钟，然后上演神技准时出现教室", personality: "CRASH" } } },
-        { text: "看到室友偷偷去图书馆学了一整天，回来后说“我今天啥也没干”。你心里真实想法是：", options: { A: { text: "我才啥都没干", personality: "FOMO" }, B: { text: "阴阳怪气一句：“那你玩得挺开心啊”", personality: "CHEAT" }, C: { text: "早就看透了，但懒得拆穿", personality: "FINE" } } },
-        { text: "你在二手群卖教材，有人砍价从30砍到5块。你会：", options: { A: { text: "犹豫一下，最后5块卖了", personality: "BROK" }, B: { text: "回一句“要不我送你，再请你吃个饭？”", personality: "CHEAT" }, C: { text: "直接拉黑", personality: "BURN" } } },
-        { text: "你在食堂吃到一根头发。你的操作是：", options: { A: { text: "和别的大坎比起来只是生命中的一粒沙尘。", personality: "ZOMB" }, B: { text: "发校园墙怒斥", personality: "FOMO" }, C: { text: "端着盘子去找阿姨理论，但听到拒绝立马恢复怂包底色", personality: "TOE" } } },
-        { text: "你的专业被亲戚说“毕业即失业”。你会：", options: { A: { text: "认真解释专业前景，最后发现对方根本没听", personality: "FOMO" }, B: { text: "直接回怼：“你还没被裁员啊。”", personality: "BURN" }, C: { text: "表面陪笑，心里憋着，不敢反驳", personality: "PPT" } } },
-        { text: "下周要上台做pre，你的PPT还没开始做，你会：", options: { A: { text: "反复演练。", personality: "GPA" }, B: { text: "一张口就是乱讲。", personality: "PPT" }, C: { text: "让AI生成直接念。", personality: "CHEAT" } } },
-        { text: "你加入的社团通知“不来例会就扣分”，但你不想去，你会：", options: { A: { text: "没关系。忍耐是对社会化程度的训练。", personality: "LATE" }, B: { text: "直接退群，并在朋友圈发“退社团真爽”", personality: "INDEPENDENT" }, C: { text: "请假说身体不舒服，继续打游戏", personality: "DARK" } } },
-        { text: "你和crush讲话的勇敢程度：", options: { A: { text: "拉完了", personality: "D_LOVER" }, B: { text: "人上人", personality: "S_LOVER" }, C: { text: "夯（莽夫勇者）", personality: "CRASH" } } },
-        { text: "学校突然通知：体测成绩和奖学金挂钩。你的反应是：", options: { A: { text: "无所谓，反正也拿不到奖学金", personality: "ZOMB" }, B: { text: "在群里找代跑", personality: "BROK" }, C: { text: "临时抱佛脚，苦命去操场刷圈", personality: "GPA" } } },
-        { text: "过年回家，亲戚问你“找到对象了吗？”。你会：", options: { A: { text: "尴尬笑笑，假装自己每天忙着念书", personality: "D_LOVER" }, B: { text: "亲切问候亲戚工资情况", personality: "BURN" }, C: { text: "直接说“关你屁事”，然后被爸妈瞪", personality: "INDEPENDENT" } } },
-        { text: "你在图书馆占了座，去上厕所回来，发现一个陌生人把你的东西推到桌子一角，自己坐在了你的位子上。对方抬头看你一眼说：“你又没写名字”。你会：", options: { A: { text: "算了。让让傻子。", personality: "ZOMB" }, B: { text: "直接坐对面，每隔30秒瞪对方一眼", personality: "DARK" }, C: { text: "在微信跟朋友大骂特骂其实0个敢当面说", personality: "FOMO" } } },
-        { text: "遇到没有边界感的室友，你会：", options: { A: { text: "忍着。普渡众生", personality: "FINE" }, B: { text: "当面指出爽翻全寝", personality: "INDEPENDENT" }, C: { text: "私下沟通", personality: "FINE" } } },
-        { text: "你的室友每天晚上和对象视频到凌晨1点。你会：", options: { A: { text: "戴上耳塞。", personality: "LATE" }, B: { text: "外放《大悲咒》对着ta的床", personality: "DARK" }, C: { text: "在宿舍群里发“希望大家11点后安静点🥰~爱你们~”", personality: "CHEAT" } } },
-        { text: "你刷到别人保研/拿大厂offer的经验帖，底下评论“接好运”。你真实想法是：", options: { A: { text: "看完并收藏，觉得有一天能用上", personality: "OFFER" }, B: { text: "点个赞，但默默有压力", personality: "TOE" }, C: { text: "直接划走，并点不感兴趣", personality: "SKIP" } } },
-        { text: "当你难得逃课一次结果刚好查出勤了，你会：", options: { A: { text: "在群里疯狂求助", personality: "FOMO" }, B: { text: "火速从宿舍飞奔到教室，推门进去说自己刚刚遁尿", personality: "DARK" }, C: { text: "无所谓，继续玩手机", personality: "BROK" } } },
-        { text: "学校要求下载一个极其难用的APP，用来打卡/交电费/选课。你会：", options: { A: { text: "下载并给一星好评", personality: "LATE" }, B: { text: "尝试找网页版", personality: "INDEPENDENT" }, C: { text: "滚。懒得装", personality: "SKIP" } } },
-        { text: "面对AI可能取代工作岗位的质疑，你的态度是：", options: { A: { text: "已经开始学AI工具，打不过就加入", personality: "LUCK" }, B: { text: "焦虑，觉得自己毕业就失业", personality: "FOMO" }, C: { text: "无所谓，到时候再说", personality: "SKIP" } } },
-        { text: "你做了一个“大学生SBTI”测试，结果骂你又懒又放不下、嘴硬还玻璃心。你的第一反应是：", options: { A: { text: "觉得这测试不准！", personality: "TOE" }, B: { text: "截图发朋友圈", personality: "CHEAT" }, C: { text: "转发到宿舍群进一步挑衅", personality: "BURN" } } }
-    ];
+        // 人格中文名+描述
+        const personalityNames = {
+            "LUCK": "🍀 幸运玩家", "SKIP": "🏃 逃课高手", "LATE": "😴 低能量鼠鼠", "TOE": "🫣 丢人但打不倒",
+            "FINE": "😌 佛系少年", "FOMO": "😰 焦虑拥抱者", "DARK": "🌑 隐形爬行者", "CHEAT": "🎭 草台玩家",
+            "S_LOVER": "💘 求爱战神", "D_LOVER": "🥴 扭蛆求爱者", "CRUSH": "💥 心动速朽者", "BURN": "🔥 反杀勇士",
+            "BROK": "💰 月底求情户", "ZOMB": "🧟 半死不活行者", "OFFER": "📄 缓慢上岸者", "INDEPENDENT": "🐺 独行侠",
+            "GPA": "📚 绩点难民", "PPT": "🎤 上台颤抖者", "DEAD": "💀 DDL战士"
+        };
 
-    const personalityLibrary = {
-        LUCK: { name: "LUCK · 三叶草", desc: "寄希望于好运，常被幸运女神忽略。但积极是你最大的底牌。" },
-        SKIP: { name: "SKIP · 跨课高手", desc: "认为上课浪费青春，在探索更有意义的事。不把逃避当理想就行。" },
-        LATE: { name: "LATE · 低能量鼠鼠", desc: "早八特困户，灵魂没醒。能爬起来，已算英雄。" },
-        TOE: { name: "TOE 👉👈 · 打不死小强", desc: "每天上演丢人把戏，却从未被打倒。你以为在出丑，其实在偷偷进化。" },
-        FINE: { name: "FINE · 阿弥陀佛", desc: "年纪轻轻就看淡世俗欲望。佛光普照，省下焦虑养肝。" },
-        FOMO: { name: "FOMO · 也是momo", desc: "很焦虑吧？抱抱你。大家都一样，你不是一个人在慌。" },
-        DARK: { name: "DARK · 阴暗爬行", desc: "0人看懂你的行踪，懒得解释。你是自己世界的主宰。" },
-        CHEAT: { name: "CHEAT · 地球online玩家", desc: "草台班子的世界，不值得你真心实意投入。" },
-        S_LOVER: { name: "S_LOVER · 求爱战神", desc: "勇气战胜99%超越同龄人。你是爱情里的敢死队。" },
-        D_LOVER: { name: "D_LOVER · 没过新手教程", desc: "抽到最低级求爱卡，背后扭成蛆。先当几天虫子没关系。" },
-        CRASH: { name: "CRASH · 翻车赔保险", desc: "日常把事情搞砸，平地也能摔。别人和crash拉拉扯扯，你不小心crush爆炸全世界。" },
-        BURN: { name: "BURN · 绝地求生", desc: "绝不委屈自己，气当场撒。乳腺癌远离你。" },
-        BROK: { name: "BROK · 卖掉了！", desc: "身心俱破产。你是财务错峰的艺术家。" },
-        ZOMB: { name: "ZOMB · 僵尸型植物", desc: "活着但没电。没关系，僵尸也有春天。" },
-        OFFER: { name: "OFFER · 缓慢上岸者", desc: "每日求 offer。A 没上岸，B 也能游得很好。" },
-        INDEPENDENT: { name: "INDEPENDENT · 钢铁侠", desc: "独来独往，懒得社交。你是钢铁侠，不是猪猪侠。" },
-        GPA: { name: "GPA · 绩点难民", desc: "不低，但也不够用。" },
-        PPT: { name: "PPT · pre难民", desc: "手抖嘴瓢脑子飞走，每天都多活一天。" },
-        DEAD: { name: "DEAD · DDL战士", desc: "赶 due 疯人，DDL 在2026年仍是第一生产力。别人用爱发电，你用焦虑发电。" }
-    };
+        const personalityDescriptions = {
+            "LUCK": "相信运气也是一种实力，总能踩点赶上好事。",
+            "SKIP": "能逃就逃，逃不掉就糊弄，糊弄不过就认命。",
+            "LATE": "永远在迟到边缘疯狂试探，早八的一生之敌。",
+            "TOE": "日常丢人，但脸皮厚如城墙，下次还敢。",
+            "FINE": "看淡一切，不争不抢，活着就行。",
+            "FOMO": "焦虑一切，错过一点就崩溃，但从不行动。",
+            "DARK": "表面平静，内心阴暗爬行，报复心极强。",
+            "CHEAT": "规则是用来钻空子的，小聪明之王。",
+            "S_LOVER": "勇敢追爱，屡败屡战，社交恐怖分子。",
+            "D_LOVER": "暗恋王者，开口就怂，内心戏拉满。",
+            "CRUSH": "心动三分钟，下头也三分钟。",
+            "BURN": "有仇必报，当场反击，绝不内耗。",
+            "BROK": "月底吃土，砍价高手，穷得理直气壮。",
+            "ZOMB": "半死不活，能不动就不动，活着像死了。",
+            "OFFER": "缓慢但坚定，总有一天会上岸。",
+            "INDEPENDENT": "一个人就是一支军队，拒绝社交。",
+            "GPA": "为绩点生，为绩点死，为绩点奋斗一辈子。",
+            "PPT": "上台前发抖，上台后胡诌，下台后失忆。",
+            "DEAD": "DDL是第一生产力，死线前夜战神。"
+        };
 
-    let userAnswers = new Array(21).fill(null);
-    let quizStarted = false;
+        let userAnswers = new Array(21).fill(null);
 
-    const heroDiv = document.getElementById('heroSection');
-    const quizDiv = document.getElementById('quizSection');
-    const resultDiv = document.getElementById('resultSection');
-    const startBtn = document.getElementById('startBtn');
-    const questionsContainer = document.getElementById('questionsList');
-    const progressHint = document.getElementById('progressHint');
-    const submitBtn = document.getElementById('submitQuizBtn');
-
-    function renderQuestions() {
-        questionsContainer.innerHTML = '';
-        questionsData.forEach((q, idx) => {
-            const qDiv = document.createElement('div');
-            qDiv.className = 'question-card';
-            qDiv.dataset.qid = idx;
-            const qNumber = idx + 1;
-            let optionsHtml = `<div class="q-title">问题 ${qNumber}</div>`;
-            optionsHtml += `<div class="q-text">${q.text}</div>`;
-            optionsHtml += `<div class="options" id="options-${idx}">`;
-            for (let [key, opt] of Object.entries(q.options)) {
-                const isChecked = (userAnswers[idx] === key);
-                const selectedClass = isChecked ? 'selected' : '';
-                optionsHtml += `
-                    <div class="option ${selectedClass}" data-qidx="${idx}" data-val="${key}">
-                        <input type="radio" name="q${idx}" id="q${idx}_${key}" value="${key}" ${isChecked ? 'checked' : ''} style="display:none;">
-                        <span style="font-weight:600; min-width:28px;">${key}.</span>
-                        <label for="q${idx}_${key}" style="font-weight:normal; cursor:pointer;">${opt.text}</label>
+        // 渲染题目
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            questionsData.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.dataset.qidx = idx;
+                card.innerHTML = `
+                    <div class="question-title">${idx+1}. ${q.text}</div>
+                    <div class="options">
+                        ${['A', 'B', 'C'].map(opt => `
+                            <div class="option" data-qidx="${idx}" data-opt="${opt}">
+                                <input type="radio" name="q${idx}" value="${opt}" id="q${idx}_${opt}" ${userAnswers[idx] === opt ? 'checked' : ''}>
+                                <div class="option-img"><img src="images/${q.options[opt].personality}.png" alt="${q.options[opt].personality}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\' viewBox=\'0 0 80 80\'%3E%3Crect width=\'80\' height=\'80\' fill=\'%23ccc\'/%3E%3Ctext x=\'40\' y=\'45\' text-anchor=\'middle\' fill=\'%23666\' font-size=\'12\'%3E${q.options[opt].personality}%3C/text%3E%3C/svg%3E'"></div>
+                                <div class="option-text">${q.options[opt].text}</div>
+                            </div>
+                        `).join('')}
                     </div>
                 `;
-            }
-            optionsHtml += `</div>`;
-            qDiv.innerHTML = optionsHtml;
-            questionsContainer.appendChild(qDiv);
-
-            const optsDiv = qDiv.querySelectorAll('.option');
-            optsDiv.forEach(optDiv => {
-                const val = optDiv.dataset.val;
-                const radio = optDiv.querySelector('input');
-                const clickHandler = () => {
-                    const parentGroup = optDiv.parentElement;
-                    parentGroup.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-                    optDiv.classList.add('selected');
-                    if (radio) radio.checked = true;
-                    userAnswers[idx] = val;
-                    updateProgress();
-                };
-                optDiv.addEventListener('click', clickHandler);
-                if (optDiv.querySelector('label')) optDiv.querySelector('label').addEventListener('click', (e) => { e.stopPropagation(); clickHandler(); });
-                if (radio) radio.addEventListener('change', () => clickHandler());
+                container.appendChild(card);
             });
-        });
-        updateProgress();
-    }
-
-    function updateProgress() {
-        const answered = userAnswers.filter(a => a !== null).length;
-        progressHint.innerText = `已完成 ${answered} / 21 题`;
-    }
-
-    function computeScores() {
-        const scores = { LUCK:0, SKIP:0, LATE:0, TOE:0, FINE:0, FOMO:0, DARK:0, CHEAT:0, S_LOVER:0, D_LOVER:0, CRASH:0, BURN:0, BROK:0, ZOMB:0, OFFER:0, INDEPENDENT:0, GPA:0, PPT:0, DEAD:0 };
-        for (let i = 0; i < userAnswers.length; i++) {
-            const ans = userAnswers[i];
-            if (!ans) continue;
-            const personality = questionsData[i].options[ans]?.personality;
-            if (personality && scores[personality] !== undefined) scores[personality]++;
+            attachEvents();
+            updateProgress();
         }
-        return scores;
-    }
 
-    function getDominantPersonality(scores) {
-        let maxCount = -1, dominant = "FINE";
-        for (let [p, cnt] of Object.entries(scores)) if (cnt > maxCount) { maxCount = cnt; dominant = p; }
-        return dominant;
-    }
-
-    // ---------- 核心：生成连贯人格侧写（而非逐题罗列）----------
-    function generateNarrativeAnalysis(scores) {
-        // 维度关键词统计
-        const conflict = (scores.BURN + scores.DARK + scores.CHEAT) - (scores.FINE + scores.ZOMB);  // 正向反击 vs 回避
-        const pressure = (scores.DEAD + scores.CRASH + scores.GPA) - (scores.SKIP + scores.LATE);
-        const social = (scores.S_LOVER + scores.BURN) - (scores.D_LOVER + scores.FOMO + scores.DARK);
-        const future = (scores.FOMO + scores.OFFER) - (scores.SKIP + scores.LUCK);
-
-        let parts = [];
-
-        // 1. 冲突应对
-        if (scores.BURN >= 2) parts.push("面对冒犯或不公，你倾向于直接反击——不委屈自己，气当场撒。这不是冲动，而是你守护边界的方式。");
-        else if (scores.FINE >= 2 || scores.ZOMB >= 2) parts.push("面对冲突，你大多选择「算了」或默默忍让。这不是软弱，而是你精明的能量管理——你清楚哪些架不值得吵。");
-        else if (scores.DARK >= 1 || scores.CHEAT >= 1) parts.push("面对矛盾，你不喜欢正面硬刚，而是用迂回或阴暗的方式处理——发墙、阴阳、冷战。你保护自己，但也不失锋利。");
-        else parts.push("面对冲突，你会在不同场景切换策略——有时忍让，有时反击，你灵活且清醒。");
-
-        // 2. 学业压力
-        if (scores.DEAD >= 2 || scores.CRASH >= 2) parts.push("处理学业压力时，你是典型的「DDL战士」——焦虑是你的燃料，通宵和速成是你的武器。你抗拒形式主义，只愿为有意义的事情拼命。");
-        else if (scores.SKIP >= 2 || scores.LATE >= 2) parts.push("面对学业压力，你常选择「战略性放弃」或拖延。这不是懒，而是你对意义感的本能筛选——你只愿为值得的事燃烧。");
-        else if (scores.GPA >= 1 || scores.OFFER >= 1) parts.push("你在学业上偏向务实——找真题、抱佛脚、临时刷圈。你知道怎么用最小成本拿到够用的结果，这是一种现实的智慧。");
-        else parts.push("你在学业压力下有一种弹性——可以拼命，也可以摆烂，全看这件事在你心里的分量。");
-
-        // 3. 社交能量
-        if (scores.INDEPENDENT >= 2) parts.push("社交上，你偏好像个「独行侠」。你不主动但也不封闭，能一个人吃饭上课，也会在熟悉的人面前放松。你珍惜能量，所以朋友不多但都很真。");
-        else if (scores.FOMO >= 2) parts.push("你有时会默默比较、暗暗焦虑——室友学了什么、别人拿到了什么。但这份焦虑更多是动力，而不是内耗。你会在意，但不会被吞没。");
-        else if (scores.S_LOVER >= 1 || scores.D_LOVER >= 1) parts.push("在亲密关系或crush面前，你有点笨拙又有点勇敢。你会怂，也会冲，你是爱情里的真实人类，不是完美演员。");
-        else parts.push("你在社交中保持一种舒适的冷淡——不讨好、不拒绝、不负责。这让你免于很多消耗，也让你更清楚谁值得靠近。");
-
-        // 4. 未来心态
-        if (scores.FOMO >= 2 || scores.OFFER >= 2) parts.push("面对未来，你有一点焦虑，但更多是「边走边看」的坦然。你收藏经验贴，也会默默比较，但最终你会按自己的节奏走。");
-        else if (scores.LUCK >= 1 || scores.SKIP >= 2) parts.push("你对未来的态度带着一点「随缘」——相信好运，也接受摆烂。你不把未来过度灾难化，这是一种难得的心理弹性。");
-        else parts.push("你面对未来时有一种清醒的现实主义——不盲目乐观，也不彻底悲观。你知道变化常在，所以更关注当下能做的事。");
-
-        // 总结
-        parts.push("总的来说，你是一种「柔韧的务实主义者」——在混乱中保护自己，在压力下灵活求生。大学没有标准答案，你也不需要成为别人。保持这份清醒和幽默，你已经走得很好了。");
-
-        return parts.join(" ");
-    }
-
-    function showResult() {
-        if (userAnswers.includes(null)) {
-            alert(`还剩 ${userAnswers.filter(a => a === null).length} 道题未选，做完才能生成报告～`);
-            return;
+        function attachEvents() {
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.addEventListener('click', function(e) {
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                        const qidx = parseInt(this.dataset.qidx);
+                        const optVal = this.dataset.opt;
+                        userAnswers[qidx] = optVal;
+                        updateProgress();
+                        // 高亮选中效果
+                        document.querySelectorAll(`.question-card[data-qidx="${qidx}"] .option`).forEach(o => o.classList.remove('selected'));
+                        this.classList.add('selected');
+                    }
+                });
+                // 如果已经选中，高亮
+                const radio = opt.querySelector('input[type="radio"]');
+                if (radio && radio.checked) {
+                    opt.classList.add('selected');
+                }
+            });
         }
-        const scores = computeScores();
-        const dominant = getDominantPersonality(scores);
-        const personalityInfo = personalityLibrary[dominant] || { name: "USB · 复合体", desc: "你在不同状态间切换，这是成年人的智慧。" };
-        const narrative = generateNarrativeAnalysis(scores);
 
-        const imgPath = `images/${dominant === "TOE" ? "TOE" : dominant}.png`;
-        const imgHtml = `<img class="personality-img" src="${imgPath}" alt="${dominant}" onerror="this.style.display='none'">`;
+        function updateProgress() {
+            const answered = userAnswers.filter(a => a !== null).length;
+            const percent = (answered / 21) * 100;
+            document.getElementById('progressBar').style.width = percent + '%';
+        }
 
-        const resultHtml = `
-            <div class="result-header">
-                <h2>🧩 你的 USB 人格画像</h2>
-                <div class="personality-badge">
-                    ${imgHtml}
-                    <span class="personality-name">${personalityInfo.name}</span>
+        // 提交并显示弹窗
+        function submitQuiz() {
+            // 检查是否答完所有题
+            if (userAnswers.some(a => a === null)) {
+                alert(`⚠️ 你还剩 ${userAnswers.filter(a => a === null).length} 道题没选\n插入USB前请先完成所有题目~`);
+                return;
+            }
+
+            // 统计人格
+            const counts = {};
+            for (let i = 0; i < 21; i++) {
+                const answer = userAnswers[i];
+                if (answer) {
+                    const personality = questionsData[i].options[answer].personality;
+                    counts[personality] = (counts[personality] || 0) + 1;
+                }
+            }
+
+            // 找出最高分人格
+            let maxPersonality = null;
+            let maxCount = -1;
+            for (const [p, c] of Object.entries(counts)) {
+                if (c > maxCount) {
+                    maxCount = c;
+                    maxPersonality = p;
+                }
+            }
+
+            // 显示弹窗（左边大图 + 右边文字）
+            const resultDiv = document.getElementById('resultContent');
+            resultDiv.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 30px; text-align: left; flex-wrap: wrap; justify-content: center;">
+                    <div style="flex-shrink: 0;">
+                        <img src="images/${maxPersonality}.png" alt="${maxPersonality}" style="width: 200px; height: 200px; object-fit: contain; border-radius: 20px;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 200 200\'%3E%3Crect width=\'200\' height=\'200\' fill=\'%234f46e5\'/%3E%3Ctext x=\'100\' y=\'110\' text-anchor=\'middle\' fill=\'white\' font-size=\'20\'%3E${maxPersonality}%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div style="min-width: 180px;">
+                        <h2 style="margin: 0 0 12px 0; font-size: 1.8rem;">${personalityNames[maxPersonality] || maxPersonality}</h2>
+                        <p style="margin: 0 0 16px 0; font-size: 1rem; color: #475569; line-height: 1.5;">${personalityDescriptions[maxPersonality] || '暂无描述'}</p>
+                        <hr style="margin: 16px 0;">
+                        <p style="margin: 0; font-size: 0.85rem; color: #94a3b8;">📊 你的完整人格谱系已存入USB</p>
+                    </div>
                 </div>
-            </div>
-            <div class="personality-desc">
-                ${personalityInfo.desc}
-            </div>
-            <div class="narrative-analysis">
-                ${narrative}
-            </div>
-            <div class="footer-note">
-                仅供娱乐 · 人格不是牢笼 · USB也有光<br>
-                小红书 @怪力弹簧
-            </div>
-        `;
-        resultDiv.innerHTML = resultHtml;
-        resultDiv.classList.remove('hidden');
-        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+            `;
+            document.getElementById('resultModal').style.display = 'flex';
+        }
 
-    function startTest() {
-        heroDiv.classList.add('hidden');
-        quizDiv.classList.remove('hidden');
-        if (!quizStarted) { renderQuestions(); quizStarted = true; }
-        resultDiv.classList.add('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+        // 重置测试
+        function resetQuiz() {
+            userAnswers = new Array(21).fill(null);
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            updateProgress();
+            document.getElementById('resultModal').style.display = 'none';
+        }
 
-    startBtn.addEventListener('click', startTest);
-    submitBtn.addEventListener('click', showResult);
-</script>
+        // 事件绑定
+        document.getElementById('submitBtn').addEventListener('click', submitQuiz);
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('resultModal').style.display = 'none';
+        });
+        document.getElementById('resetBtn').addEventListener('click', resetQuiz);
+        window.addEventListener('click', (e) => {
+            if (e.target === document.getElementById('resultModal')) {
+                document.getElementById('resultModal').style.display = 'none';
+            }
+        });
+
+        // 初始化
+        renderQuestions();
+    </script>
 </body>
 </html>
